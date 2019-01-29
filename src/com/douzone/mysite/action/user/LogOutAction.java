@@ -5,28 +5,24 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.douzone.mvc.action.Action;
 import com.douzone.mvc.util.WebUtils;
-import com.douzone.mysite.repository.UserDao;
 import com.douzone.mysite.vo.UserVo;
 
-public class JoinAction implements Action {
+public class LogOutAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		String name = request.getParameter("name");
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		String gender = request.getParameter("gender");
+		HttpSession session = request.getSession();
 		
-		UserVo vo = new UserVo();
-		vo.setName(name);
-		vo.setEmail(email);
-		vo.setPassword(password);
-		vo.setGender(gender);
+		if(session != null && session.getAttribute("authuser") != null) {
+			session.removeAttribute("authuser");
+			session.invalidate();
+		}
 		
-		new UserDao().insert(vo);
+
 		
 		WebUtils.redirect(request, response, request.getContextPath());
 	}

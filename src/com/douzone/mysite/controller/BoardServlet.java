@@ -10,22 +10,27 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.douzone.mvc.action.AbstractActionFactory;
 import com.douzone.mvc.action.Action;
-import com.douzone.mysite.action.main.MainActionFactory;
+import com.douzone.mysite.action.board.BoardActionFactory;
 
-@WebServlet("")
-public class MainServlet extends HttpServlet {
+/**
+ * Servlet implementation class BoardServlet
+ */
+@WebServlet("/board")
+public class BoardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	
-
-	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		request.setCharacterEncoding("utf-8");
 		String actionName = request.getParameter("a");
-
-		AbstractActionFactory af = new MainActionFactory();
+		
+		System.out.println(actionName+ "------------------");
+		AbstractActionFactory af = new BoardActionFactory();
 		Action action = af.getAction(actionName);
 		action.execute(request, response);
+		
+		
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
