@@ -2,9 +2,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
+
+
+
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
@@ -23,7 +27,7 @@
 
 					<label class="block-label" for="email">이메일</label>
 					<input id="email" name="email" type="text" value="">
-					<input type="button" value="id 중복체크">
+					<input type="button" value="id 중복체크" >
 					
 					<label class="block-label">패스워드</label>
 					<input name="password" type="password" value="">

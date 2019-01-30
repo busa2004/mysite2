@@ -18,7 +18,7 @@ public class BoardDao {
 		PreparedStatement pstmt = null;
 		try {
 			 conn = getConnection();
-			 String sql = "insert into board values(null,?,?,now(),?,?,?,?,?)";
+			 String sql = "insert into board values(null,?,?,now(),?,?,?,?,?,?,'n')";
 			 pstmt=conn.prepareStatement(sql);
 			 pstmt.setString(1, vo.getTitle());
 			 pstmt.setString(2, vo.getContents());
@@ -27,6 +27,7 @@ public class BoardDao {
 			 pstmt.setInt(5, vo.getoNo());
 			 pstmt.setInt(6, vo.getDepth());
 			 pstmt.setLong(7, vo.getUserNo());
+			 pstmt.setString(8, vo.getFileName());
 			 int count = pstmt.executeUpdate();
 			 result = count ==1;
 		} catch (SQLException e) {
@@ -59,7 +60,7 @@ public class BoardDao {
 			ResultSet rs = null;
 		try {
 			 conn = getConnection();
-			 String sql = "select a.no, a.title,a.contents,a.write_date,a.hit,a.g_no,a.o_no,a.depth,b.name,a.user_no from board a, user b where a.user_no = b.no order by g_no desc, o_no asc limit ?,?";
+			 String sql = "select a.no, a.title,a.contents,a.write_date,a.hit,a.g_no,a.o_no,a.depth,b.name,a.user_no,a.remove_check from board a, user b where a.user_no = b.no order by g_no desc, o_no asc limit ?,?";
 			 pstmt=conn.prepareStatement(sql);
 			 pstmt.setInt(1, start);
 			 pstmt.setInt(2, end);
@@ -75,6 +76,7 @@ public class BoardDao {
 				 int depth = rs.getInt(8);
 				 String userName = rs.getString(9);
 				 long userNo = rs.getLong(10);
+				 String removeCheck = rs.getString(11);
 				 
 				 BoardVo vo = new BoardVo();
 				 vo.setNo(no);
@@ -87,6 +89,7 @@ public class BoardDao {
 				 vo.setDepth(depth);
 				 vo.setUserName(userName);
 				 vo.setUserNo(userNo);
+				 vo.setRemoveCheck(removeCheck);
 				 list.add(vo);
 			 }
 			 
@@ -181,7 +184,7 @@ public class BoardDao {
 			ResultSet rs = null;
 		try {
 			 conn = getConnection();
-			 String sql = "select DISTINCT a.no, a.title,a.contents,a.write_date,a.hit,a.g_no,a.o_no,a.depth,b.name,a.user_no from board a, user b where a.user_no = b.no and a.title like ? or b.name like ? order by g_no desc, o_no asc limit ?,?";
+			 String sql = "select DISTINCT a.no, a.title,a.contents,a.write_date,a.hit,a.g_no,a.o_no,a.depth,b.name,a.user_no,a.remove_check from board a, user b where a.remove_check='n' and a.user_no = b.no and a.title like ? or b.name like ? order by g_no desc, o_no asc limit ?,?";
 			
 			 pstmt=conn.prepareStatement(sql);
 			 pstmt.setString(1, "%"+search+"%");
@@ -200,6 +203,7 @@ public class BoardDao {
 				 int depth = rs.getInt(8);
 				 String userName = rs.getString(9);
 				 long userNo = rs.getLong(10);
+				 String removeCheck = rs.getString(11);
 				 
 				 BoardVo vo = new BoardVo();
 				 vo.setNo(no);
@@ -212,6 +216,7 @@ public class BoardDao {
 				 vo.setDepth(depth);
 				 vo.setUserName(userName);
 				 vo.setUserNo(userNo);
+				 vo.setRemoveCheck(removeCheck);
 				 list.add(vo);
 			 }
 			 
@@ -245,7 +250,7 @@ public class BoardDao {
 			ResultSet rs = null;
 		try {
 			 conn = getConnection();
-			 String sql = "select DISTINCT a.no, a.title,a.contents,a.write_date,a.hit,a.g_no,a.o_no,a.depth,b.name,a.user_no from board a, user b where a.user_no = b.no and a.title like ? or b.name like ? order by g_no desc, o_no asc";
+			 String sql = "select DISTINCT a.no, a.title,a.contents,a.write_date,a.hit,a.g_no,a.o_no,a.depth,b.name,a.user_no from board a, user b where a.remove_check='n' and a.user_no = b.no and a.title like ? or b.name like ? order by g_no desc, o_no asc";
 			
 			 pstmt=conn.prepareStatement(sql);
 			 pstmt.setString(1, "%"+search+"%");
@@ -309,7 +314,7 @@ public class BoardDao {
 			ResultSet rs = null;
 		try {
 			 conn = getConnection();
-			 String sql = "select  a.no,a.title,a.contents,a.write_date,a.hit,a.g_no,a.o_no,a.depth,b.name,a.user_no from board a, user b where a.user_no = b.no and a.no = ? order by g_no desc, o_no asc ";
+			 String sql = "select  a.no,a.title,a.contents,a.write_date,a.hit,a.g_no,a.o_no,a.depth,b.name,a.user_no,a.file_name from board a, user b where a.user_no = b.no and a.no = ? order by g_no desc, o_no asc ";
 			 pstmt=conn.prepareStatement(sql);
 			 pstmt.setLong(1, no);
 			 rs=pstmt.executeQuery();
@@ -324,7 +329,7 @@ public class BoardDao {
 				 int depth = rs.getInt(8);
 				 String userName = rs.getString(9);
 				 long userNo = rs.getLong(10);
-				 
+				 String fileName = rs.getString(11);
 				 vo.setNo(no);
 				 vo.setTitle(title);
 				 vo.setContents(contents);
@@ -335,6 +340,7 @@ public class BoardDao {
 				 vo.setDepth(depth);
 				 vo.setUserName(userName);
 				 vo.setUserNo(userNo);
+				 vo.setFileName(fileName);
 			 }
 			 
 		} catch (SQLException e) {
@@ -486,7 +492,40 @@ return maxGno;
 
 	}
 
+	public void updateCheck(long no) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
 
+			String sql = 
+				" update board" + 
+				"  set remove_check=?" + 
+				" where no=? ";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1,"y");
+			pstmt.setLong(2,no);
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("error :" + e);
+		} finally {
+			// 자원 정리
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+	
 	public void remove(Long no) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;

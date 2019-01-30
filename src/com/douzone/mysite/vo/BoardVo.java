@@ -11,6 +11,20 @@ public class BoardVo {
 	private int depth;
 	private long userNo;
 	private String userName;
+	private String fileName;
+	private String removeCheck;
+	public String getRemoveCheck() {
+		return removeCheck;
+	}
+	public void setRemoveCheck(String removeCheck) {
+		this.removeCheck = removeCheck;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 	public long getNo() {
 		return no;
 	}

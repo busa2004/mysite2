@@ -37,7 +37,7 @@ public class ModifyAction implements Action {
 		vo.setContents(contents);
 		vo.setNo(no);
 		new BoardDao().update(vo);
-
+		
 		WebUtils.redirect(request, response, request.getContextPath()+"/board");
 
 	}

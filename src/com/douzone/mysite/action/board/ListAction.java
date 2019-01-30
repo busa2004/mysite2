@@ -42,7 +42,11 @@ public class ListAction implements Action {
 			totalSize =dao.getList().size();
 		}
 		
-		int totalPage = (int)(totalSize/10)+1;
+		int totalPage = (int)(totalSize/10);
+		if(totalSize%10 != 0) {
+			totalPage+=1;
+		}
+		
 		System.out.println("==========================" + movePage);
 		if(move == -1 && movePage+1 <= 0 ) {
 			System.out.println("==1");

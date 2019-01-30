@@ -14,13 +14,14 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp"/>
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.servletContext.contextPath}/board?no=${no}">
+				<form class="board-form" method="post" action="UploadService" enctype="multipart/form-data">
 					<c:choose>
 					<c:when test='${null eq no}'>
 					<input type = "hidden" name = "a" value="write">
 					</c:when>
 					<c:otherwise>
 					<input type = "hidden" name = "a" value="reply">
+					<input type = "hidden" name = "no" value="${no}">					
 					</c:otherwise>
 					</c:choose>
 					<table class="tbl-ex">
@@ -36,6 +37,10 @@
 							<td>
 								<textarea id="content" name="content"></textarea>
 							</td>
+							
+						</tr>
+						<tr>
+							<td colspan="2"><input type="file" value="파일 선택" name="file"/></td>
 						</tr>
 						
 					</table>

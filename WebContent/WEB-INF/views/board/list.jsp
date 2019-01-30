@@ -34,6 +34,8 @@
 				<c:forEach items="${list}" var="vo"  varStatus="status">				
 					<tr>
 						<td>[${totalSize-status.index-page*10}]</td>
+						<c:choose>
+						<c:when test='${vo.removeCheck eq "n" }'>
 						<td style="padding-left:${15*vo.depth}px">
 						<c:if test='${vo.depth ne 0 }'>
 						<img src="assets/images/reply.png"/>
@@ -47,6 +49,11 @@
 						<a href="${pageContext.servletContext.contextPath}/board?a=remove&no=${vo.no}" class="del"><img src="assets/images/recycle.png"/></a>
 						</c:if>
 						</td> <!-- 자기글 판단 -->
+						</c:when>
+						<c:otherwise>
+						<td colspan="5">삭제된 글입니다.</td>
+						</c:otherwise>
+						</c:choose>
 					</tr>
 				</c:forEach>
 				</table>

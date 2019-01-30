@@ -12,6 +12,14 @@
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="${pageContext.servletContext.contextPath}/assets/css/board.css" rel="stylesheet" type="text/css">
+<style>
+#right{
+float:right;
+}
+textarea{
+width:100%;
+}
+</style>
 </head>
 <body>
 	<div id="container">
@@ -34,6 +42,17 @@
 							</div>
 						</td>
 					</tr>
+					
+					<c:if test="${fileName ne ''}">
+					<tr>
+					<td colspan="2"><img src="${filePath}"></td>
+					
+					</tr>
+					<tr>
+					<td colspan="2"><a href="downloadService?fileName=${fileName}">다운로드</a></td>
+					</tr>
+					</c:if>
+					
 				</table>
 				
 				<!-- 댓글 생성  -->
@@ -51,13 +70,13 @@
 							<c:if test="${authuser ne null }">	
 							
 							<tr >
-							<td colspan=3>${authuser.name}</td>
-							<td colspan=1><input type="submit" value="댓글"><td>
+							<td colspan="3">${authuser.name}</td>
+							<td colspan="1"><input type="submit" value="댓글 입력" id="right"></td>
 							</tr>
 							
 							
 							<tr>
-							<td colspan=4><textarea name="contents" ></textarea></td>
+							<td colspan="4"><textarea name="contents" ></textarea></td>
 							</tr>
 							</c:if>
 							<!--  -->
@@ -71,11 +90,11 @@
 								<td>${ v.name}</td>
 								<td>${ v.regDate }</td>
 								<c:if test="${authuser.no == v.userNo }">
-								<td><a href="${pageContext.servletContext.contextPath }/board?a=commentremove&boardNo=${vo.no}&no=${v.no}"><img src="assets/images/recycle.png"/></a></td>
+								<td id="right"><a href="${pageContext.servletContext.contextPath }/board?a=commentremove&boardNo=${vo.no}&no=${v.no}"><img src="assets/images/recycle.png"/></a></td>
 								</c:if>
 							</tr>
 							<tr>
-								<td colspan=4>
+								<td colspan="4">
 								${fn:replace(v.contents,newline,"<br>")}
 								</td>
 							</tr>
@@ -96,8 +115,9 @@
 					<a href="${pageContext.servletContext.contextPath}/board">글목록</a>
 					<c:if test='${vo.userNo eq authuser.no }'>
 					<a href="${pageContext.servletContext.contextPath}/board?a=modifyform&no=${vo.no}">글수정</a> <!-- 자기글 판단 -->
-					</c:if>
+					
 					<a href="${pageContext.servletContext.contextPath}/board?a=replyform&no=${vo.no}">답글</a><!--  답글 달기  -->
+					</c:if>
 				</div>
 			</div>
 		</div>
