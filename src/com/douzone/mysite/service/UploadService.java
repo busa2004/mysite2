@@ -1,5 +1,6 @@
 package com.douzone.mysite.service;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletContext;
@@ -33,9 +34,32 @@ public class UploadService extends HttpServlet {
 			WebUtils.forward(request, response, "/WEB-INF/views/main/index.jsp");
 			return;
 		}
+		
+		
+		
+		
+		
 		ServletContext context = getServletContext(); //어플리케이션에 대한 정보를 ServletContext 객체가 갖게 됨. 
           String saveDir = context.getRealPath("/Upload"); //절대경로를 가져옴
           System.out.println("절대경로 >> " + saveDir);
+          
+          File Folder = new File(saveDir);
+
+        	// 해당 디렉토리가 없을경우 디렉토리를 생성합니다.
+        	if (!Folder.exists()) {
+        		try{
+        		    Folder.mkdir(); //폴더 생성합니다.
+        		    System.out.println("폴더가 생성되었습니다.");
+        	        } 
+        	        catch(Exception e){
+        		    e.getStackTrace();
+        		}        
+                 }else {
+        		System.out.println("이미 폴더가 생성되어 있습니다.");
+        	}
+          
+          
+          
           int maxSize = 3*1024*1024;
           String encoding = "UTF-8";
           MultipartRequest multi = new MultipartRequest(request, saveDir, maxSize, encoding, new DefaultFileRenamePolicy());
@@ -43,6 +67,11 @@ public class UploadService extends HttpServlet {
           if(fileName==null) {
         	  fileName="";
           }
+          
+      	
+
+
+          
           System.out.println(fileName);
           String div = multi.getParameter("a"); 
           String title = multi.getParameter("title");
