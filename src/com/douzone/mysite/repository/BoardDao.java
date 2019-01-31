@@ -184,7 +184,7 @@ public class BoardDao {
 			ResultSet rs = null;
 		try {
 			 conn = getConnection();
-			 String sql = "select DISTINCT a.no, a.title,a.contents,a.write_date,a.hit,a.g_no,a.o_no,a.depth,b.name,a.user_no,a.remove_check from board a, user b where a.remove_check='n' and a.user_no = b.no and a.title like ? or b.name like ? order by g_no desc, o_no asc limit ?,?";
+			 String sql = "select DISTINCT a.no, a.title,a.contents,a.write_date,a.hit,a.g_no,a.o_no,a.depth,b.name,a.user_no,a.remove_check from board a, user b where a.remove_check='n' and a.user_no = b.no and (a.title like ? or b.name like ?) order by g_no desc, o_no asc limit ?,?";
 			
 			 pstmt=conn.prepareStatement(sql);
 			 pstmt.setString(1, "%"+search+"%");
@@ -250,7 +250,7 @@ public class BoardDao {
 			ResultSet rs = null;
 		try {
 			 conn = getConnection();
-			 String sql = "select DISTINCT a.no, a.title,a.contents,a.write_date,a.hit,a.g_no,a.o_no,a.depth,b.name,a.user_no from board a, user b where a.remove_check='n' and a.user_no = b.no and a.title like ? or b.name like ? order by g_no desc, o_no asc";
+			 String sql = "select DISTINCT a.no, a.title,a.contents,a.write_date,a.hit,a.g_no,a.o_no,a.depth,b.name,a.user_no from board a, user b where a.remove_check='n' and a.user_no = b.no and (a.title like ? or b.name like ?) order by g_no desc, o_no asc";
 			
 			 pstmt=conn.prepareStatement(sql);
 			 pstmt.setString(1, "%"+search+"%");
