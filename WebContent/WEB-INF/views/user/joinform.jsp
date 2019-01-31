@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<c:import url="/WEB-INF/views/includes/favicon.jsp" />
 
 
 <title>mysite</title>

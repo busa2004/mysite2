@@ -18,14 +18,17 @@ public class AddAction implements Action {
 		String name = request.getParameter("name");
 		String password = request.getParameter("password");
 		String message = request.getParameter("message");
-
+		
+		
+		if(name!=""&&name!=null&&password!=""&&password!=null&&message!=""&&message!=null) {
 		GuestBookVo vo = new GuestBookVo();
 		vo.setName(name);
 		vo.setPassword(password);
 		vo.setMessage(message);
 
 		new GuestBookDao().insert(vo);
-
+		}
+		
 		WebUtils.redirect(request, response, request.getContextPath()+"/guestbook");
 
 	}

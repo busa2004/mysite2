@@ -10,6 +10,7 @@
 
 <html>
 <head>
+<c:import url="/WEB-INF/views/includes/favicon.jsp" />
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="${pageContext.servletContext.contextPath }/assets/css/guestbook.css" rel="stylesheet" type="text/css">
