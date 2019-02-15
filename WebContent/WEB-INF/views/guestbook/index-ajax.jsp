@@ -46,11 +46,14 @@ var messageBox = function(title,message,tag){
 			"확인" : function(){
 				$(this).dialog("close");
 			}	
+		},
+		close:function(){
+			console.log("close 시 뒤처리...");
+			tag.focus();
 		}
 	});
-	function close(){
-		tag.focus();
-	}
+	
+	
 	
 };
 
